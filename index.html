@@ -3,1169 +3,878 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Punto Fijo — Licorería Premium</title>
+<title>Punto Fijo — Licorería Premium · Huanta & Huamanga</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --rojo: #D72B2B;
-    --rojo-oscuro: #A31E1E;
-    --rojo-glow: rgba(215,43,43,0.35);
-    --negro: #0A0A0A;
-    --negro-card: #111111;
-    --negro-glass: rgba(15,15,15,0.75);
-    --blanco: #F5F0EB;
-    --blanco-dim: rgba(245,240,235,0.65);
-    --borde-glass: rgba(255,255,255,0.07);
-    --gold: #C9A84C;
-  }
+:root {
+  --r:#C8201F;--rd:#8f1414;--rg:rgba(200,32,31,.32);
+  --n:#080808;--n2:#111;--n3:#181818;
+  --w:#F4EFE9;--wd:rgba(244,239,233,.6);
+  --gl:rgba(255,255,255,.06);--gb:rgba(255,255,255,.08);
+  --gold:#C4973A;--goldl:#e8ba5e;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--n);color:var(--w);font-family:'Barlow',sans-serif;overflow-x:hidden}
+img{display:block;width:100%;object-fit:cover}
+a{text-decoration:none;color:inherit}
 
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
+/* ── LOADER ── */
+#ld{position:fixed;inset:0;z-index:9999;background:var(--n);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem}
+.ld-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,6rem);letter-spacing:.06em;color:var(--w);line-height:1}
+.ld-logo b{color:var(--r)}
+.ld-tagline{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.ld-bar{width:160px;height:2px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-top:.4rem}
+.ld-fill{height:100%;background:var(--r);border-radius:99px;animation:ldfill 2s ease forwards}
+@keyframes ldfill{to{width:100%}}
 
-  body {
-    background: var(--negro);
-    color: var(--blanco);
-    font-family: 'Barlow', sans-serif;
-    font-weight: 400;
-    overflow-x: hidden;
-  }
+/* ── CANVAS ── */
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
 
-  /* ─── LOADING ─── */
-  #loader {
-    position: fixed; inset: 0; z-index: 9999;
-    background: var(--negro);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 1.5rem;
-  }
-  #loader .logo-load {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 10vw, 6rem);
-    letter-spacing: 0.08em;
-    color: var(--blanco);
-    animation: pulse-logo 1.2s ease-in-out infinite;
-  }
-  #loader .logo-load span { color: var(--rojo); }
-  .loader-bar {
-    width: 180px; height: 3px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 99px; overflow: hidden;
-  }
-  .loader-bar-fill {
-    height: 100%; width: 0%;
-    background: linear-gradient(90deg, var(--rojo-oscuro), var(--rojo));
-    border-radius: 99px;
-    animation: load-fill 1.8s ease-in-out forwards;
-  }
-  @keyframes load-fill { to { width: 100%; } }
-  @keyframes pulse-logo {
-    0%,100% { opacity:1; text-shadow: 0 0 30px var(--rojo-glow); }
-    50% { opacity:0.6; text-shadow: none; }
-  }
+/* ── TICKER ── */
+.ticker{position:fixed;top:0;left:0;right:0;z-index:90;height:26px;background:var(--r);overflow:hidden}
+.tk-track{display:flex;white-space:nowrap;animation:tkanim 28s linear infinite;align-items:center;height:100%}
+.tk-item{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;padding:0 2.4rem;color:#fff}
+.tk-dot{color:rgba(255,255,255,.35);padding:0 .2rem}
+@keyframes tkanim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  /* ─── CANVAS PARTICLES ─── */
-  #particles { position:fixed; inset:0; z-index:0; pointer-events:none; }
+/* ── NAV ── */
+nav{position:fixed;top:26px;left:0;right:0;z-index:80;padding:1.1rem 4rem;display:flex;align-items:center;justify-content:space-between;transition:all .35s;border-bottom:1px solid transparent}
+nav.s{padding:.65rem 4rem;background:rgba(8,8,8,.92);backdrop-filter:blur(22px);border-bottom-color:rgba(255,255,255,.06)}
+.n-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.07em}
+.n-logo b{color:var(--r)}
+.n-links{display:flex;gap:2.4rem;list-style:none;align-items:center}
+.n-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--wd);transition:color .2s;position:relative}
+.n-links a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:1.5px;background:var(--r);transition:width .25s}
+.n-links a:hover{color:var(--w)}
+.n-links a:hover::after{width:100%}
+.n-cta{background:var(--r)!important;color:#fff!important;padding:.48rem 1.3rem;border-radius:4px;font-weight:700!important;transition:background .2s!important}
+.n-cta::after{display:none!important}
+.n-cta:hover{background:var(--rd)!important}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:200}
+.hbg span{display:block;width:25px;height:1.5px;background:var(--w);border-radius:2px;transition:all .3s}
+.mob{display:none;position:fixed;inset:0;z-index:150;background:rgba(8,8,8,.97);flex-direction:column;align-items:center;justify-content:center;gap:2.2rem}
+.mob.open{display:flex}
+.mob a{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.1em;transition:color .2s}
+.mob a:hover{color:var(--r)}
 
-  /* ─── NAVBAR ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 1rem 3rem;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(10,10,10,0.6);
-    backdrop-filter: blur(18px) saturate(1.4);
-    border-bottom: 1px solid var(--borde-glass);
-    transition: all 0.3s;
-  }
-  nav.scrolled {
-    padding: 0.6rem 3rem;
-    background: rgba(10,10,10,0.92);
-  }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.7rem;
-    letter-spacing: 0.08em;
-    color: var(--blanco);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--rojo); }
-  .nav-links {
-    display: flex; gap: 2.2rem; list-style: none;
-  }
-  .nav-links a {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.85rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--blanco-dim); text-decoration: none;
-    transition: color 0.25s;
-    position: relative;
-  }
-  .nav-links a::after {
-    content:''; position:absolute; left:0; bottom:-4px;
-    width:0; height:2px; background:var(--rojo);
-    transition: width 0.25s;
-  }
-  .nav-links a:hover { color: var(--blanco); }
-  .nav-links a:hover::after { width:100%; }
-  .nav-cta {
-    background: var(--rojo); color: var(--blanco)!important;
-    padding: 0.5rem 1.2rem; border-radius: 4px;
-    font-family: 'Barlow Condensed', sans-serif!important;
-    font-weight: 700!important;
-    transition: background 0.25s, transform 0.2s!important;
-  }
-  .nav-cta:hover { background: var(--rojo-oscuro)!important; transform: translateY(-1px); }
-  .nav-cta::after { display:none!important; }
-  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:200; }
-  .hamburger span { display:block; width:26px; height:2px; background:var(--blanco); border-radius:2px; transition:all 0.3s; }
-  .mobile-menu {
-    display:none; position:fixed; inset:0; z-index:150;
-    background:rgba(10,10,10,0.97);
-    flex-direction:column; align-items:center; justify-content:center; gap:2.5rem;
-  }
-  .mobile-menu.open { display:flex; }
-  .mobile-menu a {
-    font-family:'Bebas Neue',sans-serif; font-size:2.5rem; letter-spacing:0.1em;
-    color:var(--blanco); text-decoration:none;
-  }
-  .mobile-menu a:hover { color:var(--rojo); }
+/* ── HERO ── */
+#hero{position:relative;z-index:1;height:100vh;min-height:680px;display:flex;align-items:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{height:100%;width:100%;object-fit:cover;object-position:center 30%;filter:brightness(.38)}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.98) 0%,rgba(8,8,8,.55) 40%,rgba(8,8,8,.15) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 4rem 5.5rem;max-width:860px}
+.h-eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--r);margin-bottom:1.1rem;opacity:0;animation:fup .7s 2.1s ease forwards}
+.h-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.5rem,12vw,9.5rem);line-height:.9;letter-spacing:.02em;opacity:0;animation:fup .8s 2.3s ease forwards}
+.h-title .red{color:var(--r)}
+.h-title .out{-webkit-text-stroke:1.5px var(--w);color:transparent}
+.h-sub{font-size:clamp(1rem,1.8vw,1.15rem);font-weight:300;color:var(--wd);max-width:480px;line-height:1.7;margin:1.6rem 0 2.4rem;opacity:0;animation:fup .8s 2.5s ease forwards}
+.h-btns{display:flex;gap:.9rem;flex-wrap:wrap;opacity:0;animation:fup .8s 2.7s ease forwards}
+.btn-r{background:var(--r);color:#fff;padding:.85rem 2rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;border-radius:4px;border:none;cursor:pointer;transition:background .2s,transform .2s,box-shadow .3s;display:inline-block}
+.btn-r:hover{background:var(--rd);transform:translateY(-2px);box-shadow:0 8px 28px var(--rg)}
+.btn-o{background:transparent;color:var(--w);padding:.85rem 2rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;border:1.5px solid rgba(255,255,255,.25);border-radius:4px;cursor:pointer;transition:border-color .2s,transform .2s;display:inline-block}
+.btn-o:hover{border-color:var(--w);transform:translateY(-2px)}
+.h-scroll{position:absolute;right:4rem;bottom:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fup .8s 3s ease forwards;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.22em;color:rgba(255,255,255,.25);text-transform:uppercase}
+.h-scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--r),transparent);animation:spulse 1.8s ease-in-out infinite}
+@keyframes spulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes fup{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
-  /* ─── TICKER ─── */
-  .ticker-wrap {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 99;
-    height: 28px;
-    background: var(--rojo);
-    overflow: hidden;
-    transform: translateY(0);
-    transition: opacity 0.3s;
-  }
-  .ticker-track {
-    display: flex; white-space: nowrap;
-    animation: ticker-anim 30s linear infinite;
-    height: 100%; align-items: center;
-  }
-  .ticker-item {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.75rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 0 3rem;
-    color: var(--blanco);
-  }
-  .ticker-sep { color: rgba(255,255,255,0.4); margin: 0 -2rem; }
-  @keyframes ticker-anim { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+/* ── STATS STRIP ── */
+.stats{position:relative;z-index:1;background:var(--n2);border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);display:grid;grid-template-columns:repeat(5,1fr)}
+.stat-item{padding:2.2rem 1rem;text-align:center;border-right:1px solid rgba(255,255,255,.05)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,4.5vw,3.8rem);color:var(--r);line-height:1;display:flex;align-items:baseline;justify-content:center;gap:3px}
+.stat-num sup{font-size:45%;color:var(--wd)}
+.stat-label{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--wd);margin-top:.35rem}
 
-  /* ─── HERO ─── */
-  #hero {
-    position: relative; z-index: 1;
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 8rem 3rem 4rem;
-    overflow: hidden;
-  }
-  .hero-bg-gradient {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(163,30,30,0.22) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 70% 20%, rgba(100,10,10,0.15) 0%, transparent 60%);
-  }
-  .hero-content {
-    position: relative; z-index: 2;
-    text-align: center; max-width: 900px;
-  }
-  .hero-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.85rem;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--rojo); margin-bottom: 1.2rem;
-    opacity: 0; animation: fade-up 0.7s 2.1s ease forwards;
-  }
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(4rem, 12vw, 9rem);
-    line-height: 0.92;
-    letter-spacing: 0.02em;
-    color: var(--blanco);
-    opacity: 0; animation: fade-up 0.8s 2.3s ease forwards;
-  }
-  .hero-title .red { color: var(--rojo); }
-  .hero-title .stroke {
-    -webkit-text-stroke: 2px var(--blanco);
-    color: transparent;
-  }
-  .hero-sub {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    font-weight: 300;
-    color: var(--blanco-dim);
-    margin: 1.5rem auto 2.5rem;
-    max-width: 520px;
-    line-height: 1.65;
-    opacity: 0; animation: fade-up 0.8s 2.5s ease forwards;
-  }
-  .hero-btns {
-    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-    opacity: 0; animation: fade-up 0.8s 2.7s ease forwards;
-  }
-  .btn-primary {
-    background: var(--rojo); color: var(--blanco);
-    padding: 0.9rem 2.2rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 1rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    border: none; border-radius: 5px; cursor: pointer;
-    text-decoration: none;
-    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
-    box-shadow: 0 0 0 0 var(--rojo-glow);
-  }
-  .btn-primary:hover {
-    background: var(--rojo-oscuro);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px var(--rojo-glow);
-  }
-  .btn-ghost {
-    background: transparent; color: var(--blanco);
-    padding: 0.9rem 2.2rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 1rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    border: 1.5px solid rgba(255,255,255,0.3); border-radius: 5px; cursor: pointer;
-    text-decoration: none;
-    transition: border-color 0.25s, color 0.25s, transform 0.2s;
-  }
-  .btn-ghost:hover { border-color: var(--blanco); transform: translateY(-2px); }
-  .hero-scroll-hint {
-    margin-top: 4rem;
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-    opacity: 0; animation: fade-up 0.8s 3s ease forwards;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.75rem; letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.3);
-  }
-  .scroll-line {
-    width: 1px; height: 50px;
-    background: linear-gradient(to bottom, var(--rojo), transparent);
-    animation: scroll-pulse 1.8s ease-in-out infinite;
-  }
-  @keyframes scroll-pulse { 0%,100%{opacity:0.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.1)} }
+/* ── SECTION GENERIC ── */
+section{position:relative;z-index:1}
+.sec-hd{text-align:center;margin-bottom:3.5rem}
+.sec-eye{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--r);margin-bottom:.7rem}
+.sec-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5.5vw,4.2rem);line-height:1;letter-spacing:.04em}
+.sec-ttl b{color:var(--r)}
+.sec-rule{width:44px;height:2px;background:var(--r);margin:1rem auto 0;border-radius:1px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 3.5rem}
 
-  @keyframes fade-up {
-    from { opacity:0; transform: translateY(24px); }
-    to { opacity:1; transform: translateY(0); }
-  }
+/* ── ABOUT SPLIT ── */
+#about{padding:7rem 0;background:linear-gradient(180deg,var(--n) 0%,rgba(200,32,31,.04) 50%,var(--n) 100%)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-imgs{position:relative;height:520px}
+.about-img-main{position:absolute;left:0;top:0;width:70%;height:85%;border-radius:8px;overflow:hidden}
+.about-img-main img{height:100%}
+.about-img-sec{position:absolute;right:0;bottom:0;width:55%;height:60%;border-radius:8px;overflow:hidden;border:4px solid var(--n)}
+.about-img-sec img{height:100%}
+.about-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--r);padding:1.2rem 1.4rem;text-align:center;border-radius:6px;z-index:2;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.ab-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1;color:#fff}
+.ab-txt{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.about-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,4.5vw,4rem);line-height:.95;margin-bottom:1.8rem}
+.about-text h2 b{color:var(--r)}
+.about-text p{font-size:.95rem;line-height:1.75;color:var(--wd);margin-bottom:1.2rem}
+.about-feats{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:2rem}
+.ab-feat{display:flex;align-items:flex-start;gap:.8rem;padding:.9rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:6px}
+.ab-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem}
+.ab-feat-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.05em;text-transform:uppercase;color:var(--w);margin-bottom:.2rem}
+.ab-feat-txt{font-size:.78rem;color:rgba(255,255,255,.4);line-height:1.5}
 
-  /* ─── COUNTERS STRIP ─── */
-  .counters {
-    position: relative; z-index: 1;
-    border-top: 1px solid var(--borde-glass);
-    border-bottom: 1px solid var(--borde-glass);
-    background: rgba(215,43,43,0.06);
-    padding: 3rem 3rem;
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    text-align: center; gap: 1rem;
-  }
-  .counter-item { padding: 1rem; }
-  .counter-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 6vw, 5rem);
-    color: var(--rojo);
-    line-height: 1;
-    display: flex; align-items: baseline; justify-content: center; gap: 4px;
-  }
-  .counter-num sup { font-size: 40%; color: var(--blanco-dim); }
-  .counter-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.8rem;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--blanco-dim); margin-top: 0.4rem;
-  }
+/* ── CATEGORÍAS VISUALES ── */
+#cats{padding:0 0 7rem}
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+.cat-card{position:relative;height:320px;border-radius:8px;overflow:hidden;cursor:default;group:hover}
+.cat-card img{height:100%;transition:transform .5s ease,filter .5s}
+.cat-card:hover img{transform:scale(1.07);filter:brightness(.55)}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.2) 60%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.3rem 1.2rem}
+.cat-name{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:.05em;color:#fff;margin-bottom:.2rem}
+.cat-count{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--r)}
+.cat-badge{position:absolute;top:10px;right:10px;background:var(--r);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:3px}
 
-  /* ─── SECTION GENERIC ─── */
-  section { position: relative; z-index: 1; }
-  .section-header { text-align: center; margin-bottom: 3.5rem; }
-  .section-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.78rem;
-    letter-spacing: 0.28em; text-transform: uppercase;
-    color: var(--rojo); margin-bottom: 0.8rem;
-  }
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1; letter-spacing: 0.04em;
-    color: var(--blanco);
-  }
-  .section-title .accent { color: var(--rojo); }
-  .section-rule {
-    width: 50px; height: 3px;
-    background: var(--rojo); margin: 1rem auto 0;
-    border-radius: 2px;
-  }
+/* ── PRODUCTOS ── */
+#productos{padding:7rem 0;background:var(--n2)}
+.prod-filters{display:flex;gap:.55rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.pf-btn{padding:.48rem 1.3rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:var(--wd);border-radius:4px;cursor:pointer;transition:all .2s}
+.pf-btn:hover,.pf-btn.on{background:var(--r);border-color:var(--r);color:#fff}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:1.4rem;max-width:1180px;margin:0 auto;padding:0 3.5rem}
+.pc{background:var(--n3);border:1px solid rgba(255,255,255,.07);border-radius:10px;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.pc:hover{transform:translateY(-7px);box-shadow:0 22px 55px rgba(0,0,0,.55),0 0 0 1px rgba(200,32,31,.4)}
+.pc-img{height:200px;position:relative;overflow:hidden}
+.pc-img img{height:100%;transition:transform .5s}
+.pc:hover .pc-img img{transform:scale(1.06)}
+.pc-img-ico{height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#1c1c1c,#0e0e0e);position:relative}
+.pc-img-ico::after{content:'';position:absolute;inset:0;background:radial-gradient(circle,rgba(200,32,31,.1),transparent 65%)}
+.pc-bdg{position:absolute;top:10px;right:10px;background:var(--r);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;z-index:1}
+.pc-body{padding:1.2rem 1.3rem 1.5rem}
+.pc-cat{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--r);margin-bottom:.25rem}
+.pc-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.12rem;color:var(--w);line-height:1.2;margin-bottom:.4rem}
+.pc-desc{font-size:.8rem;color:rgba(255,255,255,.4);line-height:1.55;margin-bottom:1rem}
+.pc-stars{color:var(--gold);font-size:.75rem;letter-spacing:2px;margin-bottom:.8rem}
+.pc-foot{display:flex;align-items:center;justify-content:space-between}
+.pc-price{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;color:var(--w);letter-spacing:.04em}
+.pc-price small{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:400;color:var(--wd);margin-left:2px}
+.pc-wa{width:37px;height:37px;border-radius:50%;background:var(--r);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .2s}
+.pc-wa:hover{background:#1db954;transform:scale(1.12)}
+.pc-wa svg{width:18px;height:18px;fill:#fff}
+.pc-hidden{display:none!important}
 
-  /* ─── PRODUCTS ─── */
-  #productos { padding: 6rem 3rem; }
-  .prod-filters {
-    display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-  .filter-btn {
-    padding: 0.5rem 1.4rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.82rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    border: 1.5px solid rgba(255,255,255,0.15);
-    background: transparent; color: var(--blanco-dim);
-    border-radius: 4px; cursor: pointer; transition: all 0.2s;
-  }
-  .filter-btn:hover, .filter-btn.active {
-    background: var(--rojo); border-color: var(--rojo);
-    color: var(--blanco);
-  }
-  .prod-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.5rem; max-width: 1200px; margin: 0 auto;
-  }
-  .prod-card {
-    background: var(--negro-card);
-    border: 1px solid var(--borde-glass);
-    border-radius: 10px; overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: default;
-  }
-  .prod-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px var(--rojo);
-  }
-  .prod-card-img {
-    height: 180px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0e0e0e 100%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 4rem; position: relative; overflow: hidden;
-  }
-  .prod-card-img::after {
-    content:''; position:absolute; inset:0;
-    background: radial-gradient(circle at 50% 50%, rgba(215,43,43,0.08), transparent 70%);
-  }
-  .prod-badge {
-    position: absolute; top: 10px; right: 10px;
-    background: var(--rojo); color: var(--blanco);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.65rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 3px 8px; border-radius: 3px;
-    z-index: 1;
-  }
-  .prod-info { padding: 1.2rem 1.4rem 1.6rem; }
-  .prod-cat {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.7rem;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--rojo); margin-bottom: 0.3rem;
-  }
-  .prod-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 1.15rem;
-    color: var(--blanco); margin-bottom: 0.4rem;
-    line-height: 1.2;
-  }
-  .prod-desc {
-    font-size: 0.82rem; color: rgba(255,255,255,0.45);
-    line-height: 1.5; margin-bottom: 1rem;
-  }
-  .prod-footer { display:flex; align-items:center; justify-content:space-between; }
-  .prod-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem; color: var(--blanco);
-    letter-spacing: 0.05em;
-  }
-  .prod-price small {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; color: var(--blanco-dim);
-    font-weight: 400; margin-left: 2px;
-  }
-  .prod-wa {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--rojo); border: none;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: background 0.2s, transform 0.2s;
-  }
-  .prod-wa:hover { background: #1db954; transform: scale(1.1); }
-  .prod-wa svg { width:18px; height:18px; fill:#fff; }
-  .prod-hidden { display:none!important; }
+/* ── EXPERIENCE / BENTO ── */
+#exp{padding:7rem 0}
+.bento{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1.2rem;max-width:1180px;margin:0 auto;padding:0 3.5rem}
+.bento-card{border-radius:10px;overflow:hidden;position:relative;background:var(--n2);border:1px solid rgba(255,255,255,.06)}
+.bento-card.span2{grid-column:span 2}
+.bento-card.tall{grid-row:span 2}
+.bento-img{position:relative;overflow:hidden}
+.bento-img img{width:100%;height:100%;transition:transform .5s}
+.bento-card:hover .bento-img img{transform:scale(1.04)}
+.bento-txt{padding:1.6rem 1.8rem}
+.bento-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--r);margin-bottom:.5rem}
+.bento-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.25rem;color:var(--w);line-height:1.25;margin-bottom:.5rem}
+.bento-sub{font-size:.82rem;color:rgba(255,255,255,.42);line-height:1.6}
+.bento-overlay-card{display:flex;flex-direction:column;justify-content:flex-end;min-height:280px}
+.bento-overlay-card .bento-img{position:absolute;inset:0}
+.bento-overlay-card .bento-img img{object-position:center}
+.bento-overlay-card .bento-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.2) 70%,transparent 100%)}
+.bento-overlay-card .bento-txt{position:relative;z-index:1}
 
-  /* ─── DELIVERY ─── */
-  #delivery {
-    padding: 6rem 3rem;
-    background: linear-gradient(180deg, transparent, rgba(215,43,43,0.05) 50%, transparent);
-  }
-  .delivery-grid {
-    max-width: 900px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
-  }
-  .delivery-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--borde-glass);
-    border-radius: 12px; padding: 2rem 1.5rem;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .delivery-card:hover {
-    border-color: var(--rojo);
-    transform: translateY(-4px);
-  }
-  .delivery-icon {
-    font-size: 2.5rem; margin-bottom: 1rem;
-  }
-  .delivery-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 1.1rem;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--blanco); margin-bottom: 0.6rem;
-  }
-  .delivery-text {
-    font-size: 0.85rem; color: rgba(255,255,255,0.45);
-    line-height: 1.6;
-  }
+/* ── DELIVERY VISUAL ── */
+#delivery{padding:7rem 0;background:var(--n2);border-top:1px solid rgba(255,255,255,.04)}
+.del-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1180px;margin:0 auto;padding:0 3.5rem}
+.del-img{position:relative;border-radius:10px;overflow:hidden;height:500px}
+.del-img img{height:100%}
+.del-img-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,32,31,.25),transparent 60%)}
+.del-info-badge{position:absolute;bottom:2rem;left:2rem;background:rgba(8,8,8,.9);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.1rem 1.4rem;display:flex;align-items:center;gap:.9rem}
+.dib-icon{font-size:1.8rem}
+.dib-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--r);line-height:1}
+.dib-txt{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--wd)}
+.del-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,4vw,4rem);line-height:.95;margin-bottom:1.6rem}
+.del-text h2 b{color:var(--r)}
+.del-text p{font-size:.95rem;color:var(--wd);line-height:1.75;margin-bottom:2rem}
+.del-steps{display:flex;flex-direction:column;gap:.9rem;margin-bottom:2.4rem}
+.del-step{display:flex;align-items:flex-start;gap:1.1rem}
+.ds-num{width:32px;height:32px;border-radius:50%;background:var(--r);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#fff;flex-shrink:0;margin-top:.1rem}
+.ds-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.05em;text-transform:uppercase;color:var(--w);margin-bottom:.2rem}
+.ds-sub{font-size:.8rem;color:rgba(255,255,255,.4);line-height:1.5}
 
-  /* ─── TESTIMONIOS ─── */
-  #testimonios { padding: 6rem 0; overflow: hidden; }
-  .testi-track-wrap { overflow: hidden; }
-  .testi-track {
-    display: flex; gap: 1.5rem;
-    animation: testi-scroll 25s linear infinite;
-    width: max-content;
-  }
-  .testi-track:hover { animation-play-state: paused; }
-  @keyframes testi-scroll {
-    from{transform:translateX(0)}
-    to{transform:translateX(-50%)}
-  }
-  .testi-card {
-    background: var(--negro-card);
-    border: 1px solid var(--borde-glass);
-    border-radius: 12px; padding: 1.8rem;
-    width: 320px; flex-shrink: 0;
-  }
-  .testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
-  .testi-quote {
-    font-size: 0.92rem; line-height: 1.65;
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 1.2rem;
-  }
-  .testi-author {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.85rem;
-    letter-spacing: 0.1em; color: var(--blanco);
-  }
-  .testi-loc { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+/* ── GALERÍA FOTO ── */
+#galeria{padding:7rem 0}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:240px 240px;gap:1rem;max-width:1180px;margin:0 auto;padding:0 3.5rem}
+.gal-item{border-radius:8px;overflow:hidden;position:relative;cursor:default}
+.gal-item.big{grid-column:span 2;grid-row:span 2}
+.gal-item img{height:100%;transition:transform .5s,filter .4s}
+.gal-item:hover img{transform:scale(1.05);filter:brightness(.7)}
+.gal-item .gal-label{position:absolute;bottom:.9rem;left:1rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7);opacity:0;transition:opacity .3s}
+.gal-item:hover .gal-label{opacity:1}
 
-  /* ─── SEDES ─── */
-  #sedes { padding: 6rem 3rem; }
-  .sedes-grid {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
-  }
-  .sede-card {
-    background: var(--negro-card);
-    border: 1px solid var(--borde-glass);
-    border-radius: 12px; overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .sede-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  }
-  .sede-map-placeholder {
-    height: 180px; overflow: hidden; position: relative;
-  }
-  .sede-map-placeholder iframe {
-    width: 100%; height: 100%; border: 0;
-    filter: grayscale(1) invert(0.85) contrast(1.1);
-    pointer-events: none;
-  }
-  .sede-body { padding: 1.5rem; }
-  .sede-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.8rem; color: var(--rojo);
-    letter-spacing: 0.2em; margin-bottom: 0.4rem;
-  }
-  .sede-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 1.2rem;
-    color: var(--blanco); margin-bottom: 0.6rem;
-  }
-  .sede-addr { font-size: 0.83rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
-  .sede-hours {
-    margin-top: 1rem;
-    display: flex; align-items: center; gap: 0.5rem;
-    font-size: 0.78rem; color: var(--gold);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; letter-spacing: 0.08em;
-  }
+/* ── TESTIMONIOS ── */
+#testimonios{padding:7rem 0;background:var(--n2);overflow:hidden}
+.testi-row{overflow:hidden;margin-bottom:1.2rem}
+.testi-track{display:flex;gap:1.2rem;width:max-content;animation:tsanim 22s linear infinite}
+.testi-track.rev{animation-direction:reverse}
+.testi-track:hover{animation-play-state:paused}
+@keyframes tsanim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tcard{background:var(--n3);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.8rem;width:310px;flex-shrink:0;transition:border-color .3s}
+.tcard:hover{border-color:rgba(200,32,31,.4)}
+.tc-stars{color:var(--gold);font-size:.82rem;letter-spacing:2px;margin-bottom:.9rem}
+.tc-quote{font-size:.88rem;line-height:1.68;color:rgba(255,255,255,.62);margin-bottom:1.1rem}
+.tc-head{display:flex;align-items:center;gap:.75rem}
+.tc-av{width:36px;height:36px;border-radius:50%;background:var(--r);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#fff;flex-shrink:0}
+.tc-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;color:var(--w)}
+.tc-loc{font-size:.73rem;color:rgba(255,255,255,.3)}
 
-  /* ─── CTA FINAL ─── */
-  #cta {
-    padding: 7rem 3rem;
-    text-align: center;
-    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(163,30,30,0.18), transparent 70%);
-    border-top: 1px solid var(--borde-glass);
-  }
-  .cta-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 8vw, 6rem);
-    letter-spacing: 0.04em; color: var(--blanco);
-    line-height: 1;
-    margin-bottom: 1.5rem;
-  }
-  .cta-title .accent { color: var(--rojo); }
-  .cta-sub {
-    font-size: 1rem; color: var(--blanco-dim);
-    max-width: 460px; margin: 0 auto 2.5rem;
-    line-height: 1.7;
-  }
+/* ── SEDES ── */
+#sedes{padding:7rem 0}
+.sedes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;max-width:1180px;margin:0 auto;padding:0 3.5rem}
+.sede{background:var(--n2);border:1px solid rgba(255,255,255,.07);border-radius:10px;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.sede:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.sede-map{height:190px;overflow:hidden;position:relative}
+.sede-map iframe{width:100%;height:100%;border:0;filter:grayscale(1) brightness(.75) contrast(1.1)}
+.sede-pin{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;background:var(--r);border-radius:50% 50% 50% 0;transform:translate(-50%,-50%) rotate(-45deg);border:3px solid #fff;box-shadow:0 4px 14px rgba(200,32,31,.5)}
+.sede-body{padding:1.5rem}
+.sede-idx{font-family:'Bebas Neue',sans-serif;font-size:.75rem;letter-spacing:.2em;color:var(--r);margin-bottom:.35rem}
+.sede-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.2rem;color:var(--w);margin-bottom:.5rem}
+.sede-addr{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:.9rem}
+.sede-tag{display:inline-flex;align-items:center;gap:.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(200,32,31,.12);color:var(--r);padding:.3rem .7rem;border-radius:3px;border:1px solid rgba(200,32,31,.2)}
 
-  /* ─── FOOTER ─── */
-  footer {
-    background: #050505;
-    border-top: 1px solid var(--borde-glass);
-    padding: 3rem 3rem 2rem;
-  }
-  .footer-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem;
-    padding-bottom: 2.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .footer-brand-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem; letter-spacing: 0.08em;
-    color: var(--blanco); margin-bottom: 0.8rem;
-  }
-  .footer-brand-name span { color: var(--rojo); }
-  .footer-brand-desc {
-    font-size: 0.85rem; color: rgba(255,255,255,0.4);
-    line-height: 1.7; max-width: 260px;
-  }
-  .footer-col-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.75rem;
-    letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--rojo); margin-bottom: 1.2rem;
-  }
-  .footer-links { list-style: none; }
-  .footer-links li { margin-bottom: 0.6rem; }
-  .footer-links a {
-    font-size: 0.87rem; color: rgba(255,255,255,0.45);
-    text-decoration: none; transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--blanco); }
-  .footer-bottom {
-    max-width: 1100px; margin: 1.5rem auto 0;
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 0.75rem; color: rgba(255,255,255,0.2);
-    flex-wrap: wrap; gap: 0.5rem;
-  }
+/* ── PROMO BANNER ── */
+#promo{position:relative;z-index:1;overflow:hidden;height:380px;display:flex;align-items:center}
+#promo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.3)}
+.promo-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,32,31,.45) 0%,rgba(8,8,8,.85) 60%)}
+.promo-content{position:relative;z-index:1;padding:0 4rem;max-width:650px}
+.promo-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:.9rem}
+.promo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);line-height:.95;color:#fff;margin-bottom:1.2rem}
+.promo-title span{color:var(--goldl)}
+.promo-sub{font-size:.95rem;color:rgba(255,255,255,.65);line-height:1.65;margin-bottom:2rem;max-width:420px}
 
-  /* ─── WHATSAPP FLOAT ─── */
-  #wa-float {
-    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
-    width: 58px; height: 58px; border-radius: 50%;
-    background: #25D366;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
-    cursor: pointer; text-decoration: none;
-    animation: wa-pulse 2.5s ease-in-out infinite;
-    transition: transform 0.2s;
-  }
-  #wa-float:hover { transform: scale(1.1); animation-play-state: paused; }
-  #wa-float svg { width: 28px; height: 28px; fill: #fff; }
-  #wa-float::before {
-    content: '';
-    position: absolute; inset: -8px;
-    border-radius: 50%;
-    background: rgba(37,211,102,0.2);
-    animation: wa-ring 2.5s ease-in-out infinite;
-  }
-  @keyframes wa-pulse {
-    0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.4)}
-    50%{box-shadow:0 4px 35px rgba(37,211,102,0.7)}
-  }
-  @keyframes wa-ring {
-    0%,100%{transform:scale(1);opacity:0.6}
-    50%{transform:scale(1.3);opacity:0}
-  }
+/* ── HORARIOS ── */
+#horarios{padding:7rem 0;background:var(--n2)}
+.hor-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4rem;max-width:1180px;margin:0 auto;padding:0 3.5rem}
+.hor-card{background:var(--n3);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:2rem;text-align:center;transition:border-color .3s}
+.hor-card:hover{border-color:rgba(200,32,31,.35)}
+.hor-icon{font-size:2.2rem;margin-bottom:1.1rem}
+.hor-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;color:var(--w);margin-bottom:1rem}
+.hor-time{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--r);letter-spacing:.04em;margin-bottom:.2rem}
+.hor-days{font-size:.78rem;color:rgba(255,255,255,.38);letter-spacing:.05em}
+.hor-divider{width:30px;height:1px;background:rgba(200,32,31,.3);margin:.9rem auto}
+.hor-note{font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.5}
 
-  /* ─── SCROLL REVEAL ─── */
-  .reveal { opacity:0; transform:translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity:1; transform:translateY(0); }
-  .reveal-left { opacity:0; transform:translateX(-32px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal-left.visible { opacity:1; transform:translateX(0); }
-  .stagger > * { opacity:0; transform:translateY(28px); transition: opacity 0.5s ease, transform 0.5s ease; }
-  .stagger.visible > * { opacity:1; transform:translateY(0); }
-  .stagger.visible > *:nth-child(1){transition-delay:0.05s}
-  .stagger.visible > *:nth-child(2){transition-delay:0.15s}
-  .stagger.visible > *:nth-child(3){transition-delay:0.25s}
-  .stagger.visible > *:nth-child(4){transition-delay:0.35s}
-  .stagger.visible > *:nth-child(5){transition-delay:0.45s}
-  .stagger.visible > *:nth-child(6){transition-delay:0.55s}
-  .stagger.visible > *:nth-child(7){transition-delay:0.65s}
-  .stagger.visible > *:nth-child(8){transition-delay:0.75s}
+/* ── CTA FINAL ── */
+#cta{position:relative;z-index:1;overflow:hidden;padding:9rem 0}
+#cta img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.2)}
+.cta-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(200,32,31,.2),transparent 70%)}
+.cta-content{position:relative;z-index:1;text-align:center;max-width:700px;margin:0 auto;padding:0 3rem}
+.cta-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,8vw,6.5rem);line-height:.92;margin-bottom:1.4rem;color:#fff}
+.cta-ttl b{color:var(--r)}
+.cta-sub{font-size:1rem;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:2.5rem;max-width:460px;margin-left:auto;margin-right:auto}
+.cta-wa{display:inline-flex;align-items:center;gap:.7rem;background:#25D366;color:#fff;padding:.95rem 2.4rem;border-radius:50px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s,transform .2s,box-shadow .3s}
+.cta-wa:hover{background:#1aa354;transform:translateY(-3px);box-shadow:0 12px 35px rgba(37,211,102,.35)}
+.cta-wa svg{width:22px;height:22px;fill:#fff}
+.cta-num{margin-top:1.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;color:rgba(255,255,255,.35);letter-spacing:.1em}
 
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    nav.scrolled { padding: 0.6rem 1.5rem; }
-    .nav-links { display:none; }
-    .hamburger { display:flex; }
-    .counters { grid-template-columns: repeat(2,1fr); }
-    .delivery-grid, .sedes-grid { grid-template-columns: 1fr; }
-    .footer-inner { grid-template-columns: 1fr; }
-    #hero { padding: 7rem 1.5rem 4rem; }
-    #productos, #delivery, #sedes, #cta { padding: 4rem 1.5rem; }
-    footer { padding: 2.5rem 1.5rem 1.5rem; }
-  }
-  @media (max-width: 600px) {
-    .counters { grid-template-columns: repeat(2,1fr); }
-    .sedes-grid { grid-template-columns: 1fr; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ticker-track, .testi-track { animation: none!important; }
-    #particles { display:none; }
-  }
+/* ── FOOTER ── */
+footer{background:#050505;border-top:1px solid rgba(255,255,255,.05);padding:4rem 0 2rem}
+.ft-inner{max-width:1180px;margin:0 auto;padding:0 3.5rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3.5rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:2rem}
+.ft-logo{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:.07em;margin-bottom:.9rem}
+.ft-logo b{color:var(--r)}
+.ft-desc{font-size:.83rem;color:rgba(255,255,255,.35);line-height:1.75;max-width:260px;margin-bottom:1.4rem}
+.ft-social{display:flex;gap:.7rem}
+.ft-soc-btn{width:36px;height:36px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:background .2s,border-color .2s}
+.ft-soc-btn:hover{background:var(--r);border-color:var(--r)}
+.ft-col-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--r);margin-bottom:1.2rem}
+.ft-links{list-style:none}
+.ft-links li{margin-bottom:.55rem}
+.ft-links a{font-size:.84rem;color:rgba(255,255,255,.38);transition:color .2s}
+.ft-links a:hover{color:var(--w)}
+.ft-bottom{max-width:1180px;margin:0 auto;padding:0 3.5rem;display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:rgba(255,255,255,.2);flex-wrap:wrap;gap:.5rem}
+.ft-legal{color:rgba(200,32,31,.5)}
+
+/* ── WA FLOAT ── */
+#waf{position:fixed;bottom:2rem;right:2rem;z-index:200;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 22px rgba(37,211,102,.4);transition:transform .2s;cursor:pointer;text-decoration:none}
+#waf:hover{transform:scale(1.1)}
+#waf svg{width:28px;height:28px;fill:#fff}
+#waf::before{content:'';position:absolute;inset:-8px;border-radius:50%;background:rgba(37,211,102,.2);animation:waring 2.8s ease-in-out infinite}
+@keyframes waring{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:0}}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+.rl{opacity:0;transform:translateX(-28px);transition:opacity .65s ease,transform .65s ease}
+.rl.on{opacity:1;transform:translateX(0)}
+.rr{opacity:0;transform:translateX(28px);transition:opacity .65s ease,transform .65s ease}
+.rr.on{opacity:1;transform:translateX(0)}
+.stg>*{opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease}
+.stg.on>*{opacity:1;transform:translateY(0)}
+.stg.on>*:nth-child(1){transition-delay:.05s}.stg.on>*:nth-child(2){transition-delay:.13s}
+.stg.on>*:nth-child(3){transition-delay:.21s}.stg.on>*:nth-child(4){transition-delay:.29s}
+.stg.on>*:nth-child(5){transition-delay:.37s}.stg.on>*:nth-child(6){transition-delay:.45s}
+.stg.on>*:nth-child(7){transition-delay:.53s}.stg.on>*:nth-child(8){transition-delay:.61s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .about-grid,.del-grid{grid-template-columns:1fr;gap:3rem}
+  .about-imgs{height:380px}
+  .cat-grid{grid-template-columns:repeat(3,1fr)}
+  .ft-inner{grid-template-columns:1fr 1fr}
+  .bento{grid-template-columns:1fr 1fr}
+  .bento-card.span2{grid-column:span 2}
+  .gal-grid{grid-template-columns:repeat(2,1fr)}
+  .gal-item.big{grid-column:span 2;grid-row:span 1;height:280px}
+}
+@media(max-width:768px){
+  nav{padding:.9rem 1.5rem}
+  nav.s{padding:.55rem 1.5rem}
+  .n-links{display:none}
+  .hbg{display:flex}
+  .hero-content{padding:0 1.5rem 4rem}
+  .h-scroll{display:none}
+  .stats{grid-template-columns:repeat(2,1fr);grid-template-rows:auto auto}
+  .stat-item:nth-child(2){border-right:none}
+  .stat-item:nth-child(3){border-top:1px solid rgba(255,255,255,.05)}
+  .stat-item:nth-child(5){grid-column:span 2;border-right:none;border-top:1px solid rgba(255,255,255,.05)}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .cat-card{height:220px}
+  .prod-grid{padding:0 1.5rem}
+  .sedes-grid{grid-template-columns:1fr;padding:0 1.5rem}
+  .hor-grid{grid-template-columns:1fr;padding:0 1.5rem}
+  .bento{grid-template-columns:1fr;padding:0 1.5rem}
+  .bento-card.span2,.bento-card.tall{grid-column:span 1;grid-row:span 1}
+  .gal-grid{grid-template-columns:1fr 1fr;padding:0 1.5rem}
+  .gal-item.big{grid-column:span 2}
+  .ft-inner{grid-template-columns:1fr;padding:0 1.5rem}
+  .ft-bottom{padding:0 1.5rem}
+  .wrap{padding:0 1.5rem}
+  .del-grid{padding:0 1.5rem}
+  .promo-content{padding:0 1.5rem;max-width:100%}
+  #promo{height:auto;padding:4rem 0}
+  #promo img{display:none}
+  .promo-overlay{position:relative;background:linear-gradient(135deg,rgba(200,32,31,.2),var(--n) 80%)}
+}
+@media(prefers-reduced-motion:reduce){
+  .tk-track,.testi-track{animation:none!important}
+  #cv{display:none}
+}
 </style>
 </head>
 <body>
 
 <!-- LOADER -->
-<div id="loader">
-  <div class="logo-load">PUNTO <span>FIJO</span></div>
-  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-  <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase">Licorería Premium · Huanta</p>
+<div id="ld">
+  <div class="ld-logo">PUNTO <b>FIJO</b></div>
+  <div class="ld-tagline">Licorería Premium · Huanta &amp; Huamanga</div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
 </div>
 
 <!-- PARTICLES -->
-<canvas id="particles"></canvas>
+<canvas id="cv"></canvas>
 
 <!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker-track">
-    <span class="ticker-item">🍺 Cervezas nacionales e importadas</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">🥃 Whisky, ron, vodka, gin</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">🍷 Vinos y espumantes</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">🚀 Delivery express</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">📦 Combos y packs especiales</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">⚡ Atención personalizada</span>
-    <span class="ticker-sep">✦</span>
-    <!-- duplicado para loop infinito -->
-    <span class="ticker-item">🍺 Cervezas nacionales e importadas</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">🥃 Whisky, ron, vodka, gin</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">🍷 Vinos y espumantes</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">🚀 Delivery express</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">📦 Combos y packs especiales</span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">⚡ Atención personalizada</span>
-    <span class="ticker-sep">✦</span>
+<div class="ticker">
+  <div class="tk-track">
+    <span class="tk-item">Cervezas nacionales e importadas</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Whisky · Ron · Vodka · Gin · Pisco</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Vinos y espumantes premium</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Delivery express en 30 min</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Combos y packs especiales</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Sistema computarizado · 5 años de excelencia</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Cervezas nacionales e importadas</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Whisky · Ron · Vodka · Gin · Pisco</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Vinos y espumantes premium</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Delivery express en 30 min</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Combos y packs especiales</span><span class="tk-dot">✦</span>
+    <span class="tk-item">Sistema computarizado · 5 años de excelencia</span><span class="tk-dot">✦</span>
   </div>
 </div>
 
-<!-- NAVBAR -->
-<nav id="navbar" style="top:28px">
-  <a href="#hero" class="nav-logo">PUNTO <span>FIJO</span></a>
-  <ul class="nav-links">
+<!-- NAV -->
+<nav id="nb" style="top:26px">
+  <a href="#hero" class="n-logo">PUNTO <b>FIJO</b></a>
+  <ul class="n-links">
+    <li><a href="#about">Nosotros</a></li>
     <li><a href="#productos">Productos</a></li>
     <li><a href="#delivery">Delivery</a></li>
-    <li><a href="#testimonios">Reseñas</a></li>
+    <li><a href="#galeria">Galería</a></li>
     <li><a href="#sedes">Sedes</a></li>
-    <li><a href="https://wa.me/51901267943" target="_blank" class="nav-cta">Pedir ahora</a></li>
+    <li><a href="https://wa.me/51901267943" target="_blank" class="n-cta">Pedir ahora</a></li>
   </ul>
-  <div class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="hbg" id="hbg"><span></span><span></span><span></span></div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#hero" onclick="closeMobile()">Inicio</a>
-  <a href="#productos" onclick="closeMobile()">Productos</a>
-  <a href="#delivery" onclick="closeMobile()">Delivery</a>
-  <a href="#sedes" onclick="closeMobile()">Sedes</a>
-  <a href="https://wa.me/51901267943" target="_blank" style="color:var(--rojo)!important">Pedir ahora</a>
+<div class="mob" id="mob">
+  <a href="#hero" onclick="cm()">Inicio</a>
+  <a href="#about" onclick="cm()">Nosotros</a>
+  <a href="#productos" onclick="cm()">Productos</a>
+  <a href="#delivery" onclick="cm()">Delivery</a>
+  <a href="#sedes" onclick="cm()">Sedes</a>
+  <a href="https://wa.me/51901267943" target="_blank" style="color:var(--r)">Pedir ahora</a>
 </div>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg-gradient"></div>
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1600&q=80&auto=format&fit=crop" alt="Licorería premium">
+    <div class="hero-grad"></div>
+  </div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Huanta &amp; Huamanga · 5 años de excelencia</p>
-    <h1 class="hero-title">
-      EL SABOR<br>
-      <span class="red">QUE BUSCAS</span><br>
-      <span class="stroke">ESTÁ AQUÍ</span>
+    <p class="h-eyebrow">Huanta &amp; Huamanga · 5 años de confianza</p>
+    <h1 class="h-title">
+      LA MEJOR<br>
+      <span class="red">LICORERÍA</span><br>
+      <span class="out">DE AYACUCHO</span>
     </h1>
-    <p class="hero-sub">Licores nacionales e importados, cervezas de todo el mundo y delivery express. La licorería que Huanta merecía.</p>
-    <div class="hero-btns">
-      <a href="#productos" class="btn-primary">Ver productos</a>
-      <a href="https://wa.me/51901267943" target="_blank" class="btn-ghost">📲 Pedir por WhatsApp</a>
+    <p class="h-sub">Licores nacionales e importados, cervezas del mundo entero, vinos y delivery express. El sabor que buscas siempre está en Punto Fijo.</p>
+    <div class="h-btns">
+      <a href="#productos" class="btn-r">Ver catálogo completo</a>
+      <a href="https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20quiero%20hacer%20un%20pedido%20🍺" target="_blank" class="btn-o">📲 Hacer pedido</a>
     </div>
-    <div class="hero-scroll-hint">
-      <div class="scroll-line"></div>
-      <span>scroll</span>
-    </div>
+  </div>
+  <div class="h-scroll">
+    <div class="h-scroll-line"></div>
+    <span>scroll</span>
   </div>
 </section>
 
-<!-- COUNTERS -->
-<div class="counters stagger">
-  <div class="counter-item">
-    <div class="counter-num" data-target="5">0<sup>+</sup></div>
-    <div class="counter-label">Años en el mercado</div>
+<!-- STATS -->
+<div class="stats stg">
+  <div class="stat-item">
+    <div class="stat-num" data-t="5">0<sup>+ años</sup></div>
+    <div class="stat-label">Experiencia</div>
   </div>
-  <div class="counter-item">
-    <div class="counter-num" data-target="3">0</div>
-    <div class="counter-label">Sedes abiertas</div>
+  <div class="stat-item">
+    <div class="stat-num" data-t="3">0</div>
+    <div class="stat-label">Sedes abiertas</div>
   </div>
-  <div class="counter-item">
-    <div class="counter-num" data-target="500">0<sup>+</sup></div>
-    <div class="counter-label">Productos disponibles</div>
+  <div class="stat-item">
+    <div class="stat-num" data-t="500">0<sup>+</sup></div>
+    <div class="stat-label">Productos</div>
   </div>
-  <div class="counter-item">
-    <div class="counter-num" data-target="30">0<sup>min</sup></div>
-    <div class="counter-label">Delivery express</div>
+  <div class="stat-item">
+    <div class="stat-num" data-t="30">0<sup> min</sup></div>
+    <div class="stat-label">Delivery express</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-t="4000">0<sup>+</sup></div>
+    <div class="stat-label">Clientes felices</div>
   </div>
 </div>
 
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-imgs rl">
+        <div class="about-img-main"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=900&q=80&auto=format&fit=crop" alt="Bodega de licores"></div>
+        <div class="about-img-sec"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80&auto=format&fit=crop" alt="Atención al cliente"></div>
+        <div class="about-badge">
+          <div class="ab-num">5</div>
+          <div class="ab-txt">Años de<br>excelencia</div>
+        </div>
+      </div>
+      <div class="about-text rr">
+        <div class="sec-eye">Quiénes somos</div>
+        <h2>LA <b>LICORERÍA</b><br>QUE HUANTA<br>MERECÍA</h2>
+        <p>Somos Punto Fijo, la licorería más completa y moderna de Huanta y Huamanga. Desde hace 5 años llevamos los mejores licores nacionales e importados directamente a tu mesa, con atención personalizada y un sistema de gestión computarizado que garantiza orden, rapidez y la mejor experiencia.</p>
+        <p>Tres sedes estratégicamente ubicadas, cientos de productos en stock y un equipo apasionado por servir con calidad. Eso es Punto Fijo.</p>
+        <div class="about-feats stg">
+          <div class="ab-feat"><div class="ab-icon">💻</div><div><div class="ab-feat-ttl">Sistema computarizado</div><div class="ab-feat-txt">Gestión digital de inventario y pedidos en tiempo real</div></div></div>
+          <div class="ab-feat"><div class="ab-icon">🚀</div><div><div class="ab-feat-ttl">Delivery express</div><div class="ab-feat-txt">Tu pedido en menos de 30 minutos donde estés</div></div></div>
+          <div class="ab-feat"><div class="ab-icon">🌍</div><div><div class="ab-feat-ttl">Importados y nacionales</div><div class="ab-feat-txt">Las mejores marcas del mundo y del Perú</div></div></div>
+          <div class="ab-feat"><div class="ab-icon">🎁</div><div><div class="ab-feat-ttl">Packs a medida</div><div class="ab-feat-txt">Combinaciones especiales para tu evento o reunión</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section id="cats">
+  <div class="wrap">
+    <div class="sec-hd rv">
+      <p class="sec-eye">Lo que ofrecemos</p>
+      <h2 class="sec-ttl">NUESTRAS <b>CATEGORÍAS</b></h2>
+      <div class="sec-rule"></div>
+    </div>
+  </div>
+  <div class="cat-grid stg" style="max-width:1180px;margin:0 auto;padding:0 3.5rem">
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1608270586620-248524c67de9?w=500&q=75&auto=format&fit=crop" alt="Cervezas">
+      <div class="cat-overlay"><div class="cat-name">Cervezas</div><div class="cat-count">Nacionales e importadas</div></div>
+      <span class="cat-badge">Popular</span>
+    </div>
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=500&q=75&auto=format&fit=crop" alt="Whisky">
+      <div class="cat-overlay"><div class="cat-name">Whisky</div><div class="cat-count">Escocés, bourbon, blend</div></div>
+      <span class="cat-badge">Premium</span>
+    </div>
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=500&q=75&auto=format&fit=crop" alt="Vinos">
+      <div class="cat-overlay"><div class="cat-name">Vinos</div><div class="cat-count">Tintos, blancos, espumantes</div></div>
+    </div>
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=500&q=75&auto=format&fit=crop" alt="Pisco">
+      <div class="cat-overlay"><div class="cat-name">Pisco</div><div class="cat-count">Peruano premium</div></div>
+    </div>
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=500&q=75&auto=format&fit=crop" alt="Combos">
+      <div class="cat-overlay"><div class="cat-name">Combos</div><div class="cat-count">Packs para cada ocasión</div></div>
+      <span class="cat-badge">Oferta</span>
+    </div>
+  </div>
+</section>
+
 <!-- PRODUCTOS -->
 <section id="productos">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Lo que tenemos</p>
-    <h2 class="section-title">NUESTROS <span class="accent">PRODUCTOS</span></h2>
-    <div class="section-rule"></div>
+  <div class="sec-hd rv wrap">
+    <p class="sec-eye">Catálogo</p>
+    <h2 class="sec-ttl">PRODUCTOS <b>DESTACADOS</b></h2>
+    <div class="sec-rule"></div>
   </div>
-  <div class="prod-filters reveal" id="prodFilters">
-    <button class="filter-btn active" data-filter="all">Todo</button>
-    <button class="filter-btn" data-filter="cerveza">🍺 Cervezas</button>
-    <button class="filter-btn" data-filter="vino">🍷 Vinos</button>
-    <button class="filter-btn" data-filter="licor">🥃 Licores</button>
-    <button class="filter-btn" data-filter="combo">📦 Combos</button>
+  <div class="prod-filters rv" id="pf">
+    <button class="pf-btn on" data-f="all">Todo</button>
+    <button class="pf-btn" data-f="cerveza">🍺 Cervezas</button>
+    <button class="pf-btn" data-f="vino">🍷 Vinos</button>
+    <button class="pf-btn" data-f="licor">🥃 Licores</button>
+    <button class="pf-btn" data-f="pisco">🍸 Pisco</button>
+    <button class="pf-btn" data-f="combo">📦 Combos</button>
   </div>
-  <div class="prod-grid stagger" id="prodGrid">
+  <div class="prod-grid stg" id="pg">
 
-    <div class="prod-card" data-cat="cerveza">
-      <div class="prod-card-img">🍺<span class="prod-badge">Importada</span></div>
-      <div class="prod-info">
-        <div class="prod-cat">Cerveza</div>
-        <div class="prod-name">Corona Extra 330ml</div>
-        <div class="prod-desc">La clásica mexicana, refrescante y suave. Perfecta con limón.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/6<small>unid.</small></div>
-          <button class="prod-wa" onclick="waMsg('Corona Extra')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="cerveza">
+      <div class="pc-img"><img src="https://images.unsplash.com/photo-1608270586620-248524c67de9?w=500&q=70&auto=format&fit=crop&h=400" alt="Corona Extra"><span class="pc-bdg">Importada</span></div>
+      <div class="pc-body"><div class="pc-cat">Cerveza</div><div class="pc-name">Corona Extra 330ml</div><div class="pc-desc">La clásica mexicana. Refrescante, suave, perfecta con limón.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/6<small>/unid.</small></div><button class="pc-wa" onclick="wm('Corona Extra 330ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
-    <div class="prod-card" data-cat="cerveza">
-      <div class="prod-card-img">🍻</div>
-      <div class="prod-info">
-        <div class="prod-cat">Cerveza</div>
-        <div class="prod-name">Pilsen Callao 630ml</div>
-        <div class="prod-desc">La cerveza del Perú. Sabor inconfundible, frío y fresco.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/5<small>unid.</small></div>
-          <button class="prod-wa" onclick="waMsg('Pilsen Callao 630ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="cerveza">
+      <div class="pc-img"><img src="https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=500&q=70&auto=format&fit=crop&h=400" alt="Pilsen Callao"><span class="pc-bdg">Nacional</span></div>
+      <div class="pc-body"><div class="pc-cat">Cerveza</div><div class="pc-name">Pilsen Callao 630ml</div><div class="pc-desc">La cerveza del Perú. Sabor inconfundible, siempre bien fría.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/5<small>/unid.</small></div><button class="pc-wa" onclick="wm('Pilsen Callao 630ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
-    <div class="prod-card" data-cat="licor">
-      <div class="prod-card-img">🥃<span class="prod-badge">Premium</span></div>
-      <div class="prod-info">
-        <div class="prod-cat">Whisky</div>
-        <div class="prod-name">Johnnie Walker Black 750ml</div>
-        <div class="prod-desc">12 años de maduración. El black label que siempre enamora.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/120<small>btll.</small></div>
-          <button class="prod-wa" onclick="waMsg('Johnnie Walker Black 750ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="licor">
+      <div class="pc-img"><img src="https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=500&q=70&auto=format&fit=crop&h=400" alt="Johnnie Walker"><span class="pc-bdg">Premium</span></div>
+      <div class="pc-body"><div class="pc-cat">Whisky</div><div class="pc-name">Johnnie Walker Black 750ml</div><div class="pc-desc">12 años de maduración. El black label que nunca falla.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/120<small>/btll.</small></div><button class="pc-wa" onclick="wm('Johnnie Walker Black 750ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
-    <div class="prod-card" data-cat="licor">
-      <div class="prod-card-img">🍸</div>
-      <div class="prod-info">
-        <div class="prod-cat">Pisco</div>
-        <div class="prod-name">Portón Mosto Verde 750ml</div>
-        <div class="prod-desc">Pisco peruano de exportación. Aroma intenso, sabor único.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/85<small>btll.</small></div>
-          <button class="prod-wa" onclick="waMsg('Portón Mosto Verde')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="vino">
+      <div class="pc-img"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=500&q=70&auto=format&fit=crop&h=400" alt="Vino"><span class="pc-bdg">Importado</span></div>
+      <div class="pc-body"><div class="pc-cat">Vino tinto</div><div class="pc-name">Casillero del Diablo 750ml</div><div class="pc-desc">Cabernet Sauvignon chileno, elegante y robusto. Mundial.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/45<small>/btll.</small></div><button class="pc-wa" onclick="wm('Casillero del Diablo 750ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
-    <div class="prod-card" data-cat="vino">
-      <div class="prod-card-img">🍷<span class="prod-badge">Importado</span></div>
-      <div class="prod-info">
-        <div class="prod-cat">Vino tinto</div>
-        <div class="prod-name">Casillero del Diablo 750ml</div>
-        <div class="prod-desc">Cabernet Sauvignon chileno de renombre mundial. Elegante y robusto.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/45<small>btll.</small></div>
-          <button class="prod-wa" onclick="waMsg('Casillero del Diablo')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="pisco">
+      <div class="pc-img"><img src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=500&q=70&auto=format&fit=crop&h=400" alt="Pisco"><span class="pc-bdg">Nacional</span></div>
+      <div class="pc-body"><div class="pc-cat">Pisco</div><div class="pc-name">Portón Mosto Verde 750ml</div><div class="pc-desc">Pisco peruano de exportación. Aroma intenso, sabor único.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/85<small>/btll.</small></div><button class="pc-wa" onclick="wm('Portón Mosto Verde 750ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
-    <div class="prod-card" data-cat="vino">
-      <div class="prod-card-img">🥂</div>
-      <div class="prod-info">
-        <div class="prod-cat">Espumante</div>
-        <div class="prod-name">Chandon Brut 750ml</div>
-        <div class="prod-desc">El espumante argentino favorito para celebrar. Burbujeas garantizadas.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/55<small>btll.</small></div>
-          <button class="prod-wa" onclick="waMsg('Chandon Brut')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="licor">
+      <div class="pc-img"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ-QTdGit5QlAJ3ubEyYI9QI18a3EpmwgPdg&s" alt="Ron"><span class="pc-bdg">Popular</span></div>
+      <div class="pc-body"><div class="pc-cat">Ron</div><div class="pc-name">Havana Club 7 Años 750ml</div><div class="pc-desc">Ron cubano madurado 7 años. Complejo, suave, con carácter.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/70<small>/btll.</small></div><button class="pc-wa" onclick="wm('Havana Club 7 Años')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
-    <div class="prod-card" data-cat="licor">
-      <div class="prod-card-img">🍹<span class="prod-badge">Popular</span></div>
-      <div class="prod-info">
-        <div class="prod-cat">Ron</div>
-        <div class="prod-name">Havana Club 7 Años 750ml</div>
-        <div class="prod-desc">Ron cubano de 7 años. Complejo, suave y con mucho carácter.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/70<small>btll.</small></div>
-          <button class="prod-wa" onclick="waMsg('Havana Club 7 Años')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="vino">
+      <div class="pc-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=70&auto=format&fit=crop&h=400" alt="Chandon"><span class="pc-bdg">Espumante</span></div>
+      <div class="pc-body"><div class="pc-cat">Espumante</div><div class="pc-name">Chandon Brut 750ml</div><div class="pc-desc">El espumante argentino para celebrar. Burbujas perfectas.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/55<small>/btll.</small></div><button class="pc-wa" onclick="wm('Chandon Brut 750ml')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
-    <div class="prod-card" data-cat="combo">
-      <div class="prod-card-img">📦<span class="prod-badge">Oferta</span></div>
-      <div class="prod-info">
-        <div class="prod-cat">Pack</div>
-        <div class="prod-name">Combo Fiesta 🔥</div>
-        <div class="prod-desc">12 cervezas + 1 ron Cartavio + hielo + vasos. Todo para la reunión.</div>
-        <div class="prod-footer">
-          <div class="prod-price">S/99<small>pack</small></div>
-          <button class="prod-wa" onclick="waMsg('Combo Fiesta')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
-        </div>
-      </div>
+    <div class="pc" data-c="combo">
+      <div class="pc-img"><img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=500&q=70&auto=format&fit=crop&h=400" alt="Combo Fiesta"><span class="pc-bdg">🔥 Oferta</span></div>
+      <div class="pc-body"><div class="pc-cat">Pack</div><div class="pc-name">Combo Fiesta Total</div><div class="pc-desc">12 cervezas + ron Cartavio + hielo + vasos. Todo incluido.</div><div class="pc-stars">★★★★★</div><div class="pc-foot"><div class="pc-price">S/99<small>/pack</small></div><button class="pc-wa" onclick="wm('Combo Fiesta Total')"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div>
     </div>
 
   </div>
 </section>
 
-<!-- DELIVERY -->
+<!-- EXPERIENCE BENTO -->
+<section id="exp">
+  <div class="wrap"><div class="sec-hd rv"><p class="sec-eye">Por qué elegirnos</p><h2 class="sec-ttl">LA <b>EXPERIENCIA</b> PUNTO FIJO</h2><div class="sec-rule"></div></div></div>
+  <div class="bento">
+    <div class="bento-card bento-overlay-card span2" style="min-height:280px">
+      <div class="bento-img" style="position:absolute;inset:0"><img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=900&q=75&auto=format&fit=crop" alt="Ambiente licorería" style="object-position:center 40%"></div>
+      <div class="bento-grad"></div>
+      <div class="bento-txt"><div class="bento-tag">Nuestro ambiente</div><div class="bento-ttl">Una licorería diseñada para ti</div><div class="bento-sub">Espacios amplios, bien surtidos y atención que te hace sentir en casa.</div></div>
+    </div>
+    <div class="bento-card" style="display:flex;flex-direction:column;justify-content:center;padding:2.5rem 2rem;background:var(--r)">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#fff;line-height:1;margin-bottom:.5rem">30<span style="font-size:1.5rem">min</span></div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.85)">Delivery garantizado</div>
+      <div style="font-size:.78rem;color:rgba(255,255,255,.6);margin-top:.5rem;line-height:1.5">Pedís, nosotros llegamos. Cada vez más rápido.</div>
+    </div>
+    <div class="bento-card" style="min-height:240px">
+      <div class="bento-img" style="height:160px"><img src="https://licoreriasunidas.pe/cdn/shop/collections/BANNER_seccion_NUEVAS_JOYAS.webp?v=1773356361" alt="Selección premium"></div>
+      <div class="bento-txt"><div class="bento-tag">Selección</div><div class="bento-ttl">Importados y nacionales</div><div class="bento-sub">Las mejores marcas del mundo, disponibles en Huanta.</div></div>
+    </div>
+    <div class="bento-card" style="min-height:240px">
+      <div class="bento-img" style="height:160px"><img src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&q=75&auto=format&fit=crop" alt="Pisco peruano"></div>
+      <div class="bento-txt"><div class="bento-tag">Orgullo peruano</div><div class="bento-ttl">El mejor pisco, siempre</div><div class="bento-sub">Selección de piscos premium de las mejores bodegas del Perú.</div></div>
+    </div>
+    <div class="bento-card" style="padding:2.5rem 2rem;background:var(--n3);display:flex;flex-direction:column;justify-content:center">
+      <div class="bento-tag">Sistema digital</div>
+      <div class="bento-ttl">💻 Computarizado</div>
+      <div class="bento-sub">Inventario en tiempo real. Nunca te diremos que se acabó lo que querías.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERY SECTION -->
 <section id="delivery">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Rápido y seguro</p>
-    <h2 class="section-title">DELIVERY <span class="accent">EXPRESS</span></h2>
-    <div class="section-rule"></div>
+  <div class="del-grid">
+    <div class="del-img rl">
+      <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80&auto=format&fit=crop" alt="Delivery de licores">
+      <div class="del-img-overlay"></div>
+      <div class="del-info-badge">
+        <div class="dib-icon">⚡</div>
+        <div><div class="dib-num">30</div><div class="dib-txt">Minutos o menos</div></div>
+      </div>
+    </div>
+    <div class="del-text rr">
+      <div class="sec-eye">Delivery Express</div>
+      <h2>PIde Y<br><b>LLEGAMOS</b></h2>
+      <p>Nuestro servicio de delivery express lleva tus licores favoritos hasta tu puerta en menos de 30 minutos dentro de Huanta y Huamanga. Sin complicaciones, sin apps, solo un mensaje por WhatsApp.</p>
+      <div class="del-steps">
+        <div class="del-step"><div class="ds-num">1</div><div><div class="ds-ttl">Escríbenos al WhatsApp</div><div class="ds-sub">Dinos qué quieres y tu dirección. Así de simple.</div></div></div>
+        <div class="del-step"><div class="ds-num">2</div><div><div class="ds-ttl">Confirmamos tu pedido</div><div class="ds-sub">En minutos te confirmamos disponibilidad y precio.</div></div></div>
+        <div class="del-step"><div class="ds-num">3</div><div><div class="ds-ttl">¡Tu pedido llega frío!</div><div class="ds-sub">Entregamos en tu puerta, frío y en perfecto estado.</div></div></div>
+      </div>
+      <a href="https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20quiero%20hacer%20un%20delivery%20🍺" target="_blank" class="btn-r">📲 Pedir delivery ahora</a>
+    </div>
   </div>
-  <div class="delivery-grid stagger">
-    <div class="delivery-card">
-      <div class="delivery-icon">⚡</div>
-      <div class="delivery-title">Rápido</div>
-      <div class="delivery-text">Delivery en menos de 30 minutos dentro de Huanta y Huamanga. Tu pedido llega frío y en perfecto estado.</div>
-    </div>
-    <div class="delivery-card">
-      <div class="delivery-icon">📱</div>
-      <div class="delivery-title">Fácil pedido</div>
-      <div class="delivery-text">Solo escríbenos por WhatsApp, cuéntanos qué quieres y listo. Sin apps, sin cuentas, sin complicaciones.</div>
-    </div>
-    <div class="delivery-card">
-      <div class="delivery-icon">🎁</div>
-      <div class="delivery-title">Packs especiales</div>
-      <div class="delivery-text">Armamos el combo perfecto para tu reunión, cumpleaños o evento. Pregunta por nuestros packs personalizados.</div>
-    </div>
-  </div>
-  <div style="text-align:center;margin-top:3rem" class="reveal">
-    <a href="https://wa.me/51901267943?text=Hola%2C%20quiero%20hacer%20un%20pedido%20a%20Punto%20Fijo%20🍺" target="_blank" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.8rem">
-      📲 Hacer pedido ahora
-    </a>
+</section>
+
+<!-- GALERÍA -->
+<section id="galeria">
+  <div class="wrap"><div class="sec-hd rv"><p class="sec-eye">Momentos</p><h2 class="sec-ttl">GALERÍA <b>PUNTO FIJO</b></h2><div class="sec-rule"></div></div></div>
+  <div class="gal-grid stg">
+    <div class="gal-item big"><img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=900&q=80&auto=format&fit=crop" alt="Licores premium" style="height:100%;object-position:center"><div class="gal-label">Nuestra selección</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1608270586620-248524c67de9?w=500&q=75&auto=format&fit=crop" alt="Cervezas" style="height:100%"><div class="gal-label">Cervezas del mundo</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=500&q=75&auto=format&fit=crop" alt="Vinos" style="height:100%"><div class="gal-label">Vinos importados</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=500&q=75&auto=format&fit=crop" alt="Whisky" style="height:100%"><div class="gal-label">Whiskies premium</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=500&q=75&auto=format&fit=crop" alt="Pisco" style="height:100%"><div class="gal-label">Pisco peruano</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=500&q=75&auto=format&fit=crop" alt="Delivery" style="height:100%"><div class="gal-label">Delivery express</div></div>
   </div>
 </section>
 
 <!-- TESTIMONIOS -->
 <section id="testimonios">
-  <div class="section-header reveal" style="padding:0 1.5rem">
-    <p class="section-eyebrow">Lo que dicen</p>
-    <h2 class="section-title">CLIENTES <span class="accent">SATISFECHOS</span></h2>
-    <div class="section-rule"></div>
-  </div>
-  <div class="testi-track-wrap" style="margin-top:3rem">
-    <div class="testi-track">
-      <!-- original -->
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"El delivery llegó en 20 minutos, bien frío todo. La atención por WhatsApp es súper rápida. Ya es mi licorería de siempre."</p><div class="testi-author">Carlos M.</div><div class="testi-loc">Huanta Centro</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Pedí un combo para la fiesta de mi hijo y quedé impresionada. Precios justos y variedad increíble. 100% recomendado."</p><div class="testi-author">María E.</div><div class="testi-loc">Huamanga</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Tienen todo lo que necesito: importados, nacionales, pisco. Nunca me han fallado en 2 años que llevo comprando aquí."</p><div class="testi-author">Rodrigo T.</div><div class="testi-loc">Huanta</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★☆</div><p class="testi-quote">"Los precios son muy competitivos y el trato es excelente. El Whisky que pedí llegó con un detalle de hielos. Muy detalles."</p><div class="testi-author">Paola V.</div><div class="testi-loc">Luricocha</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Compré para el matrimonio de mi hermana, armaron el pack que pedí a medida. Todo impecable. Volveré siempre."</p><div class="testi-author">Juan C.</div><div class="testi-loc">Huanta</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Me sorprendió la rapidez. Pedí a las 9pm y en 25 minutos ya tenía todo en casa. El sistema está muy bien organizado."</p><div class="testi-author">Rosa H.</div><div class="testi-loc">Huamanga</div></div>
-      <!-- duplicado para loop -->
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"El delivery llegó en 20 minutos, bien frío todo. La atención por WhatsApp es súper rápida. Ya es mi licorería de siempre."</p><div class="testi-author">Carlos M.</div><div class="testi-loc">Huanta Centro</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Pedí un combo para la fiesta de mi hijo y quedé impresionada. Precios justos y variedad increíble. 100% recomendado."</p><div class="testi-author">María E.</div><div class="testi-loc">Huamanga</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Tienen todo lo que necesito: importados, nacionales, pisco. Nunca me han fallado en 2 años que llevo comprando aquí."</p><div class="testi-author">Rodrigo T.</div><div class="testi-loc">Huanta</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★☆</div><p class="testi-quote">"Los precios son muy competitivos y el trato es excelente. El Whisky que pedí llegó con un detalle de hielos. Muy detalles."</p><div class="testi-author">Paola V.</div><div class="testi-loc">Luricocha</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Compré para el matrimonio de mi hermana, armaron el pack que pedí a medida. Todo impecable. Volveré siempre."</p><div class="testi-author">Juan C.</div><div class="testi-loc">Huanta</div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Me sorprendió la rapidez. Pedí a las 9pm y en 25 minutos ya tenía todo en casa. El sistema está muy bien organizado."</p><div class="testi-author">Rosa H.</div><div class="testi-loc">Huamanga</div></div>
+  <div class="wrap"><div class="sec-hd rv"><p class="sec-eye">Reseñas reales</p><h2 class="sec-ttl">LO QUE DICEN NUESTROS <b>CLIENTES</b></h2><div class="sec-rule"></div></div></div>
+  <div style="margin-top:3rem">
+    <div class="testi-row">
+      <div class="testi-track">
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"El delivery llegó en 20 minutos, bien frío todo. La atención por WhatsApp es súper rápida. Ya es mi licorería de siempre."</p><div class="tc-head"><div class="tc-av">CM</div><div><div class="tc-name">Carlos M.</div><div class="tc-loc">Huanta Centro</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Pedí un combo para la fiesta de mi hijo y quedé impresionada. Precios justos y variedad increíble."</p><div class="tc-head"><div class="tc-av">ME</div><div><div class="tc-name">María E.</div><div class="tc-loc">Huamanga</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Tienen todo lo que necesito: importados, nacionales, pisco. Nunca me han fallado en 2 años comprando aquí."</p><div class="tc-head"><div class="tc-av">RT</div><div><div class="tc-name">Rodrigo T.</div><div class="tc-loc">Huanta</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Compré para el matrimonio de mi hermana, armaron el pack a medida. Todo impecable. Volveré siempre."</p><div class="tc-head"><div class="tc-av">JC</div><div><div class="tc-name">Juan C.</div><div class="tc-loc">Huanta</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★☆</div><p class="tc-quote">"Precios muy competitivos y el trato excelente. El Whisky llegó con detalle de hielos. Muy buen servicio."</p><div class="tc-head"><div class="tc-av">PV</div><div><div class="tc-name">Paola V.</div><div class="tc-loc">Luricocha</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Pedí a las 9pm y en 25 minutos ya tenía todo en casa. El sistema está muy bien organizado."</p><div class="tc-head"><div class="tc-av">RH</div><div><div class="tc-name">Rosa H.</div><div class="tc-loc">Huamanga</div></div></div></div>
+        <!-- duplicado loop -->
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"El delivery llegó en 20 minutos, bien frío todo. La atención por WhatsApp es súper rápida. Ya es mi licorería de siempre."</p><div class="tc-head"><div class="tc-av">CM</div><div><div class="tc-name">Carlos M.</div><div class="tc-loc">Huanta Centro</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Pedí un combo para la fiesta de mi hijo y quedé impresionada. Precios justos y variedad increíble."</p><div class="tc-head"><div class="tc-av">ME</div><div><div class="tc-name">María E.</div><div class="tc-loc">Huamanga</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Tienen todo lo que necesito: importados, nacionales, pisco. Nunca me han fallado en 2 años comprando aquí."</p><div class="tc-head"><div class="tc-av">RT</div><div><div class="tc-name">Rodrigo T.</div><div class="tc-loc">Huanta</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Compré para el matrimonio de mi hermana, armaron el pack a medida. Todo impecable. Volveré siempre."</p><div class="tc-head"><div class="tc-av">JC</div><div><div class="tc-name">Juan C.</div><div class="tc-loc">Huanta</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★☆</div><p class="tc-quote">"Precios muy competitivos y el trato excelente. El Whisky llegó con detalle de hielos. Muy buen servicio."</p><div class="tc-head"><div class="tc-av">PV</div><div><div class="tc-name">Paola V.</div><div class="tc-loc">Luricocha</div></div></div></div>
+        <div class="tcard"><div class="tc-stars">★★★★★</div><p class="tc-quote">"Pedí a las 9pm y en 25 minutos ya tenía todo en casa. El sistema está muy bien organizado."</p><div class="tc-head"><div class="tc-av">RH</div><div><div class="tc-name">Rosa H.</div><div class="tc-loc">Huamanga</div></div></div></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- SEDES -->
-<section id="sedes">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Encuéntranos</p>
-    <h2 class="section-title">NUESTRAS <span class="accent">SEDES</span></h2>
-    <div class="section-rule"></div>
+<section id="sedes" style="padding:7rem 0">
+  <div class="wrap"><div class="sec-hd rv"><p class="sec-eye">Dónde estamos</p><h2 class="sec-ttl">NUESTRAS <b>3 SEDES</b></h2><div class="sec-rule"></div></div></div>
+  <div class="sedes-grid stg">
+    <div class="sede">
+      <div class="sede-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d976.5!2d-74.246!3d-12.927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU1JzM3LjIiUyA3NMKwMTQnNDUuNiJX!5e0!3m2!1ses!2spe!4v1" loading="lazy"></iframe></div>
+      <div class="sede-body"><div class="sede-idx">SEDE 01 · PRINCIPAL</div><div class="sede-name">Huanta Centro</div><div class="sede-addr">Av. Gervasio Santillana 491<br>Huanta, Ayacucho, Perú</div><div class="sede-tag">⏰ Lun–Dom · 9am – 11pm</div></div>
+    </div>
+    <div class="sede">
+      <div class="sede-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d976.5!2d-74.252!3d-12.931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU1JzM5LjYiUyA3NMKwMTUnMDcuMiJX!5e0!3m2!1ses!2spe!4v1" loading="lazy"></iframe></div>
+      <div class="sede-body"><div class="sede-idx">SEDE 02</div><div class="sede-name">Huanta Norte</div><div class="sede-addr">Jr. Lima 230<br>Huanta, Ayacucho, Perú</div><div class="sede-tag">⏰ Lun–Dom · 9am – 10:30pm</div></div>
+    </div>
+    <div class="sede">
+      <div class="sede-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d976.5!2d-74.223!3d-13.160!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDA5JzM2LjAiUyA3NMKwMTMnMjIuOCJX!5e0!3m2!1ses!2spe!4v1" loading="lazy"></iframe></div>
+      <div class="sede-body"><div class="sede-idx">SEDE 03 · HUAMANGA</div><div class="sede-name">Huamanga</div><div class="sede-addr">Av. Gervasio Santillana 491<br>Huamanga, Ayacucho, Perú</div><div class="sede-tag">⏰ Lun–Dom · 9am – 11pm</div></div>
+    </div>
   </div>
-  <div class="sedes-grid stagger" style="max-width:1100px;margin:0 auto">
+</section>
 
-    <div class="sede-card">
-      <div class="sede-map-placeholder">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d488.5!2d-74.246!3d-12.927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU1JzM3LjIiUyA3NMKwMTQnNDUuNiJX!5e0!3m2!1ses!2spe!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-      <div class="sede-body">
-        <div class="sede-num">SEDE 01 — PRINCIPAL</div>
-        <div class="sede-name">Huanta Centro</div>
-        <div class="sede-addr">Av. Gervasio Santillana 491<br>Huanta, Ayacucho</div>
-        <div class="sede-hours">⏰ Lun–Dom · 9am – 11pm</div>
-      </div>
+<!-- PROMO BANNER -->
+<section id="promo">
+  <img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=1600&q=75&auto=format&fit=crop" alt="Celebra con Punto Fijo">
+  <div class="promo-overlay"></div>
+  <div class="promo-content rv">
+    <div class="promo-tag">Combos especiales</div>
+    <div class="promo-title">CELEBRA CON<br><span>PUNTO FIJO</span></div>
+    <div class="promo-sub">Armamos el combo perfecto para tu fiesta, cumpleaños, matrimonio o reunión familiar. Pregunta por nuestros packs personalizados.</div>
+    <a href="https://wa.me/51901267943?text=Hola%2C%20quiero%20un%20combo%20especial%20para%20mi%20evento%20🎉" target="_blank" class="btn-r">Consultar combos</a>
+  </div>
+</section>
+
+<!-- HORARIOS -->
+<section id="horarios">
+  <div class="wrap"><div class="sec-hd rv"><p class="sec-eye">Siempre disponibles</p><h2 class="sec-ttl">HORARIOS DE <b>ATENCIÓN</b></h2><div class="sec-rule"></div></div></div>
+  <div class="hor-grid stg">
+    <div class="hor-card">
+      <div class="hor-icon">🌅</div>
+      <div class="hor-ttl">Huanta Sedes</div>
+      <div class="hor-time">9am – 11pm</div>
+      <div class="hor-days">Lunes a Domingo · Todos los días</div>
+      <div class="hor-divider"></div>
+      <div class="hor-note">Incluye feriados y fechas especiales. Delivery hasta las 10:30pm.</div>
     </div>
-
-    <div class="sede-card">
-      <div class="sede-map-placeholder">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d488.5!2d-74.252!3d-12.931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU1JzM5LjYiUyA3NMKwMTUnMDcuMiJX!5e0!3m2!1ses!2spe!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-      <div class="sede-body">
-        <div class="sede-num">SEDE 02 — HUANTA</div>
-        <div class="sede-name">Huanta Norte</div>
-        <div class="sede-addr">Jr. Lima 230<br>Huanta, Ayacucho</div>
-        <div class="sede-hours">⏰ Lun–Dom · 9am – 10:30pm</div>
-      </div>
+    <div class="hor-card">
+      <div class="hor-icon">🏙️</div>
+      <div class="hor-ttl">Huamanga Sede</div>
+      <div class="hor-time">9am – 11pm</div>
+      <div class="hor-days">Lunes a Domingo · Todos los días</div>
+      <div class="hor-divider"></div>
+      <div class="hor-note">Delivery disponible toda la semana. Horario extendido en eventos especiales.</div>
     </div>
-
-    <div class="sede-card">
-      <div class="sede-map-placeholder">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d976.5!2d-74.223!3d-13.160!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDA5JzM2LjAiUyA3NMKwMTMnMjIuOCJX!5e0!3m2!1ses!2spe!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-      <div class="sede-body">
-        <div class="sede-num">SEDE 03 — HUAMANGA</div>
-        <div class="sede-name">Huamanga</div>
-        <div class="sede-addr">Av. Gervasio Santillana 491<br>Huamanga, Ayacucho</div>
-        <div class="sede-hours">⏰ Lun–Dom · 9am – 11pm</div>
-      </div>
+    <div class="hor-card" style="border-color:rgba(200,32,31,.3);background:rgba(200,32,31,.06)">
+      <div class="hor-icon">📱</div>
+      <div class="hor-ttl">WhatsApp 24/7</div>
+      <div class="hor-time" style="color:var(--goldl)">24/7</div>
+      <div class="hor-days">Siempre disponible para consultas</div>
+      <div class="hor-divider"></div>
+      <div class="hor-note">Pedidos, consultas y packs especiales. Respondemos rápido siempre.</div>
     </div>
-
   </div>
 </section>
 
 <!-- CTA FINAL -->
 <section id="cta">
-  <div class="reveal">
-    <h2 class="cta-title">¿LISTO PARA<br><span class="accent">PEDIR?</span></h2>
-    <p class="cta-sub">Escríbenos al WhatsApp y recibe tu pedido en casa. Rápido, fácil y sin salir.</p>
-    <a href="https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20quiero%20hacer%20un%20pedido%20🍺" target="_blank" class="btn-primary" style="font-size:1.1rem;padding:1.1rem 3rem">
-      📲 Escribir ahora · 901 267 943
-    </a>
+  <img src="https://images.unsplash.com/photo-1608270586620-248524c67de9?w=1600&q=70&auto=format&fit=crop" alt="background">
+  <div class="cta-overlay"></div>
+  <div class="cta-content rv">
+    <h2 class="cta-ttl">¿LISTO PARA<br><b>PEDIR?</b></h2>
+    <p class="cta-sub">Escríbenos y recibe tu pedido en casa en menos de 30 minutos. Sin complicaciones, sin apps.</p>
+    <a href="https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20quiero%20hacer%20un%20pedido%20%F0%9F%8D%BA" target="_blank" class="cta-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Escribir ahora por WhatsApp</a>
+    <div class="cta-num">901 267 943 · Huanta & Huamanga</div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
+  <div class="ft-inner">
     <div>
-      <div class="footer-brand-name">PUNTO <span>FIJO</span></div>
-      <p class="footer-brand-desc">Licorería premium con 5 años de experiencia sirviendo a Huanta y Huamanga. Licores nacionales e importados, delivery express y atención personalizada.</p>
+      <div class="ft-logo">PUNTO <b>FIJO</b></div>
+      <p class="ft-desc">Licorería premium con 5 años de experiencia sirviendo a Huanta y Huamanga. Licores nacionales e importados, delivery express y atención personalizada que marca la diferencia.</p>
+      <div class="ft-social">
+        <div class="ft-soc-btn">📘</div>
+        <div class="ft-soc-btn">📸</div>
+        <div class="ft-soc-btn">🎵</div>
+        <a href="https://wa.me/51901267943" target="_blank" class="ft-soc-btn" style="background:rgba(37,211,102,.15);border-color:rgba(37,211,102,.2)">💬</a>
+      </div>
     </div>
     <div>
-      <div class="footer-col-title">Navegación</div>
-      <ul class="footer-links">
+      <div class="ft-col-ttl">Navegación</div>
+      <ul class="ft-links">
         <li><a href="#hero">Inicio</a></li>
+        <li><a href="#about">Nosotros</a></li>
         <li><a href="#productos">Productos</a></li>
         <li><a href="#delivery">Delivery</a></li>
-        <li><a href="#testimonios">Reseñas</a></li>
+        <li><a href="#galeria">Galería</a></li>
         <li><a href="#sedes">Sedes</a></li>
       </ul>
     </div>
     <div>
-      <div class="footer-col-title">Contacto</div>
-      <ul class="footer-links">
+      <div class="ft-col-ttl">Categorías</div>
+      <ul class="ft-links">
+        <li><a href="#productos">Cervezas</a></li>
+        <li><a href="#productos">Whiskies</a></li>
+        <li><a href="#productos">Vinos</a></li>
+        <li><a href="#productos">Pisco</a></li>
+        <li><a href="#productos">Ron &amp; Vodka</a></li>
+        <li><a href="#productos">Combos</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-col-ttl">Contacto</div>
+      <ul class="ft-links">
         <li><a href="https://wa.me/51901267943" target="_blank">📱 901 267 943</a></li>
         <li><a href="#sedes">📍 Av. Gervasio Santillana 491</a></li>
-        <li><a href="#sedes">📍 Huanta · Huamanga</a></li>
-        <li><a href="#" style="color:var(--gold)">⏰ 9am – 11pm todos los días</a></li>
+        <li><a href="#sedes">📍 Huanta &amp; Huamanga</a></li>
+        <li><a href="#horarios" style="color:var(--gold)">⏰ 9am–11pm todos los días</a></li>
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2024 Punto Fijo Licorería · Huanta, Ayacucho</span>
-    <span>Venta exclusiva a mayores de 18 años · Consuma con moderación</span>
+  <div class="ft-bottom">
+    <span>© 2024 Punto Fijo Licorería · Huanta, Ayacucho, Perú</span>
+    <span class="ft-legal">Venta exclusiva a mayores de 18 años · Consuma con responsabilidad</span>
   </div>
 </footer>
 
-<!-- WHATSAPP FLOTANTE -->
-<a id="wa-float" href="https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20quiero%20hacer%20un%20pedido%20🍺" target="_blank" aria-label="WhatsApp">
+<!-- WA FLOAT -->
+<a id="waf" href="https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20quiero%20hacer%20un%20pedido%20%F0%9F%8D%BA" target="_blank" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </a>
 
 <script>
-// ─── LOADER ───
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loader = document.getElementById('loader');
-    loader.style.transition = 'opacity 0.6s ease';
-    loader.style.opacity = '0';
-    setTimeout(() => loader.style.display = 'none', 600);
-  }, 2000);
-});
+// LOADER
+window.addEventListener('load',()=>{setTimeout(()=>{const l=document.getElementById('ld');l.style.transition='opacity .6s';l.style.opacity='0';setTimeout(()=>l.style.display='none',620)},2100)});
 
-// ─── PARTICLES (burbujas flotantes) ───
-(function(){
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  let W, H, bubbles = [];
-
-  function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  for(let i = 0; i < 55; i++){
-    bubbles.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 4 + 1,
-      speed: Math.random() * 0.4 + 0.1,
-      opacity: Math.random() * 0.18 + 0.04,
-      sway: Math.random() * 0.5 - 0.25,
-      t: Math.random() * Math.PI * 2
+// PARTICLES
+(()=>{
+  const c=document.getElementById('cv'),x=c.getContext('2d');
+  let W,H,bs=[];
+  function rs(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+  window.addEventListener('resize',rs);rs();
+  for(let i=0;i<60;i++)bs.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*3.5+.8,sp:Math.random()*.35+.08,op:Math.random()*.15+.03,sw:Math.random()*.5-.25,t:Math.random()*Math.PI*2});
+  function dr(){
+    x.clearRect(0,0,W,H);
+    bs.forEach(b=>{
+      b.t+=.01;b.x+=Math.sin(b.t)*b.sw;b.y-=b.sp;
+      if(b.y+b.r<0){b.y=H+b.r;b.x=Math.random()*W}
+      x.beginPath();x.arc(b.x,b.y,b.r,0,Math.PI*2);
+      x.strokeStyle=b.r>2?`rgba(200,32,31,${b.op})`:`rgba(244,239,233,${b.op})`;
+      x.lineWidth=.7;x.stroke();
     });
+    requestAnimationFrame(dr);
   }
-
-  function draw(){
-    ctx.clearRect(0, 0, W, H);
-    bubbles.forEach(b => {
-      b.t += 0.012;
-      b.x += Math.sin(b.t) * b.sway;
-      b.y -= b.speed;
-      if(b.y + b.r < 0){
-        b.y = H + b.r;
-        b.x = Math.random() * W;
-      }
-      ctx.beginPath();
-      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-      // alterna rojo y blanco
-      const color = Math.random() > 0.85 ? `rgba(215,43,43,${b.opacity})` : `rgba(245,240,235,${b.opacity})`;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
+  dr();
 })();
 
-// ─── NAVBAR SCROLL ───
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  if(window.scrollY > 80) navbar.classList.add('scrolled');
-  else navbar.classList.remove('scrolled');
-});
+// NAV
+const nb=document.getElementById('nb');
+window.addEventListener('scroll',()=>nb.classList.toggle('s',window.scrollY>80));
 
-// ─── HAMBURGER ───
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-hamburger.addEventListener('click', () => {
-  mobileMenu.classList.toggle('open');
-});
-function closeMobile(){ mobileMenu.classList.remove('open'); }
+// HAMBURGER
+document.getElementById('hbg').addEventListener('click',()=>document.getElementById('mob').classList.toggle('open'));
+function cm(){document.getElementById('mob').classList.remove('open')}
 
-// ─── PRODUCT FILTER ───
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.prod-card').forEach(card => {
-      if(filter === 'all' || card.dataset.cat === filter){
-        card.classList.remove('prod-hidden');
-      } else {
-        card.classList.add('prod-hidden');
-      }
+// FILTERS
+document.querySelectorAll('.pf-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.pf-btn').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    const f=b.dataset.f;
+    document.querySelectorAll('.pc').forEach((c,i)=>{
+      const show=f==='all'||c.dataset.c===f;
+      c.classList.toggle('pc-hidden',!show);
+      if(show){c.style.opacity='0';c.style.transform='translateY(16px)';setTimeout(()=>{c.style.transition=`opacity .3s ${i*.05}s,transform .3s ${i*.05}s`;c.style.opacity='1';c.style.transform='translateY(0)'},20)}
     });
   });
 });
 
-// ─── WA MESSAGE ───
-function waMsg(product){
-  window.open(`https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20quiero%20consultar%20por%20${encodeURIComponent(product)}%20🍺`, '_blank');
-}
+// WA
+function wm(p){window.open(`https://wa.me/51901267943?text=Hola%20Punto%20Fijo%2C%20me%20interesa%20${encodeURIComponent(p)}%20%F0%9F%8D%BA`,'_blank')}
 
-// ─── COUNTERS ───
-function animateCounter(el, target, duration){
-  let start = 0;
-  const step = (timestamp) => {
-    if(!start) start = timestamp;
-    const progress = Math.min((timestamp - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    el.dataset.val = Math.round(eased * target);
-    // re-render text keeping sup
-    const sup = el.querySelector('sup');
-    const supText = sup ? sup.outerHTML : '';
-    el.innerHTML = Math.round(eased * target) + supText;
-    if(progress < 1) requestAnimationFrame(step);
+// COUNTERS
+function aC(el,t,d){
+  let s=0;
+  const sup=el.querySelector('sup'),st=sup?sup.outerHTML:'';
+  const step=ts=>{
+    if(!s)s=ts;
+    const p=Math.min((ts-s)/d,1),e=1-Math.pow(1-p,3);
+    el.innerHTML=Math.round(e*t)+st;
+    if(p<1)requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
 }
 
-// ─── INTERSECTION OBSERVER ───
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-
-      // counter trigger
-      if(entry.target.classList.contains('counters')){
-        entry.target.querySelectorAll('[data-target]').forEach(el => {
-          animateCounter(el, +el.dataset.target, 1800);
-        });
-      }
-      io.unobserve(entry.target);
+// INTERSECTION OBSERVER
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('on');
+      if(e.target.classList.contains('stats'))
+        e.target.querySelectorAll('[data-t]').forEach(el=>aC(el,+el.dataset.t,1800));
+      io.unobserve(e.target);
     }
   });
-}, { threshold: 0.15 });
-
-document.querySelectorAll('.reveal, .reveal-left, .stagger').forEach(el => io.observe(el));
-
-// ─── STAGGER GRID FILTER RE-ANIMATE ───
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.prod-card:not(.prod-hidden)').forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      setTimeout(() => {
-        card.style.transition = `opacity 0.35s ${i*0.06}s ease, transform 0.35s ${i*0.06}s ease`;
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, 20);
-    });
-  });
-});
+},{threshold:.12});
+document.querySelectorAll('.rv,.rl,.rr,.stg').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
